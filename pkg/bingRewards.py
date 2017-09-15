@@ -30,6 +30,10 @@ class HTTPRefererHandler(urllib2.HTTPRedirectHandler):
 #                 req.headers["Referer"] = "http://www.bing.com/"
 #             else:
                 req.headers["Referer"] = req.get_full_url()
+        if "Location" in headers:
+            location = headers["Location"]
+            if location.startswith("microsoft-edge:"):
+                headers["Location"] = location[15:]
         return urllib2.HTTPRedirectHandler.http_error_302(self, req, fp, code, msg, headers)
 
     http_error_301 = http_error_303 = http_error_307 = http_error_302
